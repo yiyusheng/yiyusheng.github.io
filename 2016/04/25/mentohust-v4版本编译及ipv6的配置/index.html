@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <meta name="description" content="一直以来，锐捷都是各大高校主要的上网认证软件。但是，其没有路由器版本，导致许多有wifi需求的同学只能用开电脑用wifi分享软件来建立和使用wifi。这种方式建立的wifi不稳定且费电，而且要自己控制开关机。 由华中科技大学hustmoon开发的mentohust提供了一套上网认证方案，可以完全代替锐捷进行上网认证，同时还支持断线重连等功能。hustmoon开发了windows版本和linux版本">
+<meta name="keywords" content="教程,路由,锐捷,mentohust,v4算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mentohust v4版本编译及ipv6的配置教程">
+<meta property="og:url" content="http://soundrain.net/2016/04/25/mentohust-v4版本编译及ipv6的配置/index.html">
+<meta property="og:site_name" content="York&#39;s ideapad">
+<meta property="og:description" content="一直以来，锐捷都是各大高校主要的上网认证软件。但是，其没有路由器版本，导致许多有wifi需求的同学只能用开电脑用wifi分享软件来建立和使用wifi。这种方式建立的wifi不稳定且费电，而且要自己控制开关机。 由华中科技大学hustmoon开发的mentohust提供了一套上网认证方案，可以完全代替锐捷进行上网认证，同时还支持断线重连等功能。hustmoon开发了windows版本和linux版本">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-07-11T02:52:43.061Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mentohust v4版本编译及ipv6的配置教程">
+<meta name="twitter:description" content="一直以来，锐捷都是各大高校主要的上网认证软件。但是，其没有路由器版本，导致许多有wifi需求的同学只能用开电脑用wifi分享软件来建立和使用wifi。这种方式建立的wifi不稳定且费电，而且要自己控制开关机。 由华中科技大学hustmoon开发的mentohust提供了一套上网认证方案，可以完全代替锐捷进行上网认证，同时还支持断线重连等功能。hustmoon开发了windows版本和linux版本">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://soundrain.net/2016/04/25/mentohust-v4版本编译及ipv6的配置/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>mentohust v4版本编译及ipv6的配置教程 | York's ideapad</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">York's ideapad</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://soundrain.net/2016/04/25/mentohust-v4版本编译及ipv6的配置/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="York Yi">
+      <meta itemprop="description" content="May the force be with you!">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="York's ideapad">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">mentohust v4版本编译及ipv6的配置教程
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2016-04-25 12:36:03" itemprop="dateCreated datePublished" datetime="2016-04-25T12:36:03Z">2016-04-25</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-07-11 02:52:43" itemprop="dateModified" datetime="2019-07-11T02:52:43Z">2019-07-11</time>
+              </span>
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/文章/" itemprop="url" rel="index"><span itemprop="name">文章</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一直以来，锐捷都是各大高校主要的上网认证软件。但是，其没有路由器版本，导致许多有wifi需求的同学只能用开电脑用wifi分享软件来建立和使用wifi。这种方式建立的wifi不稳定且费电，而且要自己控制开关机。</p>
+<p>由华中科技大学hustmoon开发的mentohust提供了一套上网认证方案，可以完全代替锐捷进行上网认证，同时还支持断线重连等功能。hustmoon开发了windows版本和linux版本的mentohust，同时开源了软件代码(<a href="https://github.com/liuqun/mentohust" target="_blank" rel="noopener">https://github.com/liuqun/mentohust</a> )。代码的开源使得mentohust在路由器上使用成为了可能。但是hustmoon毕业之后，mentohust不再更新，最新的mentohust版本为0.3.4，仅支持锐捷v3加密算法，而最新的锐捷上网认证软件将加密算法升级到了v4。这使得很多升级了锐捷加密算法的学校无法再用mentohust进行认证。同为华科的hyrathb开发了支持v4算法的mentohust，同时也开源了代码(<a href="https://github.com/hyrathb/mentohust" target="_blank" rel="noopener">https://github.com/hyrathb/mentohust</a> )。</p>
+<p>本文给出作者在ubuntu 16.04上交叉编译hyrathb的mentohust源码，生成用在斐讯K2上的mentohust版本的详细流程。主要参考一篇编译原生mentohust的文章，感谢该文章作者(<a href="http://blog.csdn.net/warriorpaw/article/details/7990226" target="_blank" rel="noopener">http://blog.csdn.net/warriorpaw/article/details/7990226</a> )。同时感谢两位代码提供者。<br><strong>希望所有从本文获取编译方法的朋友都能尊重开源协议</strong>。<br><strong>以下先解释交叉编译的意义，再提供交叉编译的具体步骤</strong>。<br><strong>本文所有文件都在文末附件中</strong>。<a id="more"></a></p>
+<h2 id="交叉编译是什么-？"><a href="#交叉编译是什么-？" class="headerlink" title="交叉编译是什么 ？"></a>交叉编译是什么 ？</h2><p>我们知道机器只能执行二进制代码而不能执行源代码，所有的源代码都需要转化成二进制可执行文件后机器方可执行。编译就是从源代码(C，C++，JAVA代码)生成机器可执行文件的过程，真正执行这个过程的东西叫编译器。因为不同的机器有着不同的CPU指令集，他们也有着不同的编译器。这些编译器将同一段源代码生成对应机器的二进制可执行文件。</p>
+<p>一般情况下编译器是和操作系统绑定在一起的，比如Linux中的gcc,g++等。但是某些机器有空间和性能限制，无法把编译器装在里面，比如路由器。我们可以在PC机上用路由器的编译器对源代码进行编译，生成可以用在路由器上的可执行文件。这种在A机器上生成B机器上的可执行文件的方式就叫交叉编译。作者就是在ubuntu上交叉编译路由器上的openwrt系统可用的mentohustV4版本。</p>
+<h2 id="mentohustV4编译准备"><a href="#mentohustV4编译准备" class="headerlink" title="mentohustV4编译准备"></a>mentohustV4编译准备</h2><p>完成mentohust的编译需要准备以下硬件和软件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">a. 一个装有openwrt系统的且剩余空间超过1MB的路由器(本文使用斐讯K2,刷openwrt教程见上一篇blog)</span><br><span class="line"></span><br><span class="line">b. 一台装有linux的电脑(本文为ubuntu16.04)</span><br><span class="line"></span><br><span class="line">c. openwrt对应的编译器</span><br><span class="line">(因为K2是remips+mt7620的cpu,所以对应的编译器下载地址为https://downloads.openwrt.org/chaos_calmer/15.05.1/ramips/mt7620/OpenWrt-SDK-15.05.1-ramips-mt7620_gcc-4.8-linaro_uClibc-0.9.33.2.Linux-x86_64.tar.bz2)</span><br><span class="line">[解压命令tar jxvf OpenWrt-SDK-15.05.1-ramips-mt7620_gcc-4.8-linaro_uClibc-0.9.33.2.Linux-x86_64.tar.bz2。我嫌名字太长改成了Openwrt-SDK-rampips-mt7620 ]</span><br><span class="line"></span><br><span class="line">d. libpcap，这个软件要在编译的过程用到(http://www.tcpdump.org/release/libpcap-1.7.4.tar.gz) </span><br><span class="line">[解压命令tar zxvf libpcap-1.7.4.tar.gz ]</span><br><span class="line"></span><br><span class="line">e. mentohust-master.zip(https://github.com/hyrathb/mentohust)</span><br><span class="line">[解压命令unzip mentohust-master.zip ]</span><br></pre></td></tr></table></figure>
+
+<p>(以上三个软件都下载并解压在/home/xxx/目录下)</p>
+<h2 id="mentohustV4的编译步骤"><a href="#mentohustV4的编译步骤" class="headerlink" title="mentohustV4的编译步骤"></a>mentohustV4的编译步骤</h2><p>主要步骤分成编译环境的配置，libpcap的交叉编译，mentohust的交叉编译，mentohust的使用。</p>
+<p>a. 编译环境的配置。这些命令为计算机指定接下来的工作要用到的编译器类型。<br>打开终端(ctrl+alt+T),输入以下命令(需联网)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo -i (这里要输入密码)</span><br><span class="line">apt-get install build-essential bison flex zlib1g-dev libncurses5-dev subversion quilt intltool ruby fastjar unzip gawk autogen autopoint</span><br><span class="line">export PATH=$PATH:/home/xxx/Openwrt-SDK-rampips-mt7620/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/bin</span><br><span class="line">export CC=mipsel-openwrt-linux-gcc  </span><br><span class="line">export CPP=mipsel-openwrt-linux-cpp  </span><br><span class="line">export GCC=mipsel-openwrt-linux-gcc  </span><br><span class="line">export CXX=mipsel-openwrt-linux-g++  </span><br><span class="line">export RANLIB=mipsel-openwrt-linux-uclibc-ranlib  </span><br><span class="line">export ac_cv_linux_vers=2.6.24  </span><br><span class="line">export LDFLAGS=&quot;-static&quot;  </span><br><span class="line">export CFLAGS=&quot;-Os -s&quot;  </span><br><span class="line">export STAGING_DIR=/home/xxx/Openwrt-SDK-rampips-mt7620/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/</span><br></pre></td></tr></table></figure>
+
+<p>b. libpcap的交叉编译：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /home/xxx/libpcap-1.7.4</span><br><span class="line">./configure --host=mipsel-linux --with-pcap=linux</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<p>c. Mentohust的编译：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /home/xxx/mentohust-master/</span><br><span class="line">sh autogen.sh</span><br><span class="line">./configure --host=mipsel-linux   --disable-encodepass --disable-notify --with-pcap=/home/xxx/libpcap-1.7.4/libpcap.a</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<p>此时交叉编译已完成，mentohust在/home/xxx/mentohust-master/src文件夹中。将电脑和路由用网线连上，把mentohust传到路由上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp /home/xxx/mentohust-master/src/mentohust root@192.168.1.1:/root</span><br></pre></td></tr></table></figure>
+
+<p>d. 启动mentohust:<br><code>ssh root@192.168.1.1</code> 登录路由<br><code>sudo ./mentohust -u*** -p*** -a1 -d2 -b3 -neth0.2</code> (参数请参考./mentohust -h)<br>至此完成编译的应用。<br>如果出现dhclient无法取得ip，请在路由中输入ipconfig查看网卡。我因为网卡用的eth0(即-neth0.2写成了-neth0)一直没连上。<br>e. 实现mentohust的开机启动<br>在/etc/init.d下添加文件launchMento并输入以下内容，保存</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh /etc/rc.common</span><br><span class="line"># /init.d/launchMento</span><br><span class="line">START = 50</span><br><span class="line">start()</span><br><span class="line">&#123;</span><br><span class="line">        /root/mentohust -uM201172379 -p******** -a1 -b0 -d2 -neth0.2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">stop()</span><br><span class="line">&#123;</span><br><span class="line">        /root/mentohust -k &amp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改launchMento权限为755<br><code>chmod 755 launchMento</code><br>建立链接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /etc/init.d/launchMento /etc/rc.d/S97launchMento</span><br></pre></td></tr></table></figure>
+
+<p>f. 为路由lan配置ipv6。这一方法适用于路由自动获得ipv6地址，通过认证获得ipv4地址的情况。换言之，你要在路由中可以ping通ipv6.google.com</p>
+<ol>
+<li>登录路由。把network中global network options中的ipv6 ULA-Prefix清空</li>
+<li>修改/etc/config/dhcp为<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">config dhcp &apos;lan&apos;</span><br><span class="line">    option interface &apos;lan&apos;</span><br><span class="line">    option start &apos;100&apos;</span><br><span class="line">    option limit &apos;150&apos;</span><br><span class="line">    option leasetime &apos;12h&apos;</span><br><span class="line">    option ra &apos;hybrid&apos;</span><br><span class="line">    option dhcpv6 &apos;hybrid&apos;</span><br><span class="line">    option ndp &apos;hybrid&apos;</span><br><span class="line">    option ra_management &apos;1&apos;</span><br><span class="line"></span><br><span class="line">config dhcp &apos;wan6&apos;</span><br><span class="line">    option interface &apos;wan&apos;</span><br><span class="line">    option dhcpv6 &apos;hybrid&apos;</span><br><span class="line">    option ra &apos;hybrid&apos;</span><br><span class="line">    option ndp &apos;hybrid&apos;</span><br><span class="line">    option master &apos;1&apos;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>重启路由你就得到了一个开机自启动mentohust的K2路由。</p>
+<p>附件链接：<a href="http://pan.baidu.com/s/1c2fopWk" target="_blank" rel="noopener">http://pan.baidu.com/s/1c2fopWk</a> 密码：t142</p>
+
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/教程/" rel="tag"># 教程</a>
+          
+            <a href="/tags/路由/" rel="tag"># 路由</a>
+          
+            <a href="/tags/锐捷/" rel="tag"># 锐捷</a>
+          
+            <a href="/tags/mentohust/" rel="tag"># mentohust</a>
+          
+            <a href="/tags/v4算法/" rel="tag"># v4算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/25/20160425-斐讯K2路由刷openwrt实践教程/" rel="next" title="斐讯K2路由刷openwrt实践教程">
+                <i class="fa fa-chevron-left"></i> 斐讯K2路由刷openwrt实践教程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/20/20160519-Caret package使用/" rel="prev" title="Caret Package 使用教程">
+                Caret Package 使用教程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">York Yi</p>
+              <div class="site-description motion-element" itemprop="description">May the force be with you!</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">40</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#交叉编译是什么-？"><span class="nav-number">1.</span> <span class="nav-text">交叉编译是什么 ？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mentohustV4编译准备"><span class="nav-number">2.</span> <span class="nav-text">mentohustV4编译准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mentohustV4的编译步骤"><span class="nav-number">3.</span> <span class="nav-text">mentohustV4的编译步骤</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">York Yi</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
