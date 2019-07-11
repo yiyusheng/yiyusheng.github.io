@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>利用scrapy爬虫收集数据 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="利用scrapy这个python包来爬取数据是一件非常方便的事情。以下记录了我使用scrapy抓取二手交易网站信息索引页的步骤以及出现的问题。 scrapy的模块结构如图所示，scrapy分为5个主要模块：  scrapy engine: 连接其它4个模块，处理他们之间的数据流和指令流 Spiders: 网页处理模块。对提取到的网页进行解析，提取指定信息；生成下一个要提取的网页 Scheduler">
+<meta name="keywords" content="python,scrapy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用scrapy爬虫收集数据">
+<meta property="og:url" content="http://yoursite.com/2017/07/09/20170709-利用scrapy爬虫收集数据/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="利用scrapy这个python包来爬取数据是一件非常方便的事情。以下记录了我使用scrapy抓取二手交易网站信息索引页的步骤以及出现的问题。 scrapy的模块结构如图所示，scrapy分为5个主要模块：  scrapy engine: 连接其它4个模块，处理他们之间的数据流和指令流 Spiders: 网页处理模块。对提取到的网页进行解析，提取指定信息；生成下一个要提取的网页 Scheduler">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/566f33cbgy1fhdejdffxaj20jg0dqgog.jpg">
+<meta property="og:updated_time" content="2019-07-11T02:52:43.059Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用scrapy爬虫收集数据">
+<meta name="twitter:description" content="利用scrapy这个python包来爬取数据是一件非常方便的事情。以下记录了我使用scrapy抓取二手交易网站信息索引页的步骤以及出现的问题。 scrapy的模块结构如图所示，scrapy分为5个主要模块：  scrapy engine: 连接其它4个模块，处理他们之间的数据流和指令流 Spiders: 网页处理模块。对提取到的网页进行解析，提取指定信息；生成下一个要提取的网页 Scheduler">
+<meta name="twitter:image" content="http://ww1.sinaimg.cn/large/566f33cbgy1fhdejdffxaj20jg0dqgog.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-20170709-利用scrapy爬虫收集数据" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/09/20170709-利用scrapy爬虫收集数据/" class="article-date">
+  <time datetime="2017-07-09T01:32:00.000Z" itemprop="datePublished">2017-07-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/心得/">心得</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      利用scrapy爬虫收集数据
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>利用scrapy这个python包来爬取数据是一件非常方便的事情。以下记录了我使用scrapy抓取二手交易网站信息索引页的步骤以及出现的问题。</p>
+<h2 id="scrapy的模块结构"><a href="#scrapy的模块结构" class="headerlink" title="scrapy的模块结构"></a>scrapy的模块结构</h2><p><img src="http://ww1.sinaimg.cn/large/566f33cbgy1fhdejdffxaj20jg0dqgog.jpg" alt="scrapy_structure"><br>如图所示，scrapy分为5个主要模块：</p>
+<ol>
+<li>scrapy engine: 连接其它4个模块，处理他们之间的数据流和指令流</li>
+<li>Spiders: 网页处理模块。对提取到的网页进行解析，提取指定信息；生成下一个要提取的网页</li>
+<li>Scheduler: 网页调度模块。调度网页请求，从spider接收新的网页请求，为downloader提供下载请求</li>
+<li>Downloader: 网页下载模块。下载网页</li>
+<li>Item Pipeline: 数据处理模块。处理从spiders解析的数据，并存储到数据库中。</li>
+</ol>
+<h2 id="数据抓取流程"><a href="#数据抓取流程" class="headerlink" title="数据抓取流程"></a>数据抓取流程</h2><p>以下是我抓取网站deyi时的步骤：</p>
+<ol>
+<li>初始化项目 <code>scrapy startproject deyi</code></li>
+<li>在项目目录内建立spider <code>scrapy genspider -t crawl deyiWeb deyi.com</code></li>
+<li>修改./deyi/spider/deyiMobi.py,写自己的start_requests和parse函数。parse函数中就是你要抓紧的数据，建议使用xpath来处理html数据</li>
+<li>修改./deyi/item.py,加入deyiMobiItem类，添加对应字段，并在spider中引用这个类</li>
+<li>修改./deyi/piplines.py，加入deyiMobiPipeline类和对应的输出方法。这里是对取到的数据进行处理的地方</li>
+<li>修改./deyi/settings.py，在item_pipelines中加入对应的类名。如果需要调整延迟的话可以调整download_delay</li>
+<li>在/etc/crontab中设置计划任务</li>
+</ol>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ol>
+<li>手机版只能爬50<em>20页，网页版只能爬1000</em>50页，而它总共有36w贴。通过页面爬不到的数据可以通过搜索得到。</li>
+<li>在取dgtle时，发现数据是包含在div[class = ‘tradebox *’]中的需要用xpath的contain方法来提取。</li>
+<li>在取newsmth时，发现取到的是escaped_fragment页面，而不是真实页面，这说明有浏览器的限定</li>
+<li>对于需要帐号登录的网站，需要使用scrapy中对应的登陆功能</li>
+<li>把数据导入数据库时显示乱码。解决这个问题需要满足三个条件：建立数据库编码选择utf-8;建立表时的编码选择utf-8；python代码使用utf-8编码。再加一个条件，mysql的my.conf需要加一些说明为utf-8的句子</li>
+<li>我原本想把所有网站都放在同一个project中，后来发现数据会串行的通过所有启动了的pipeline，无法为某一个spider指定pipeline，所以还是每个网站建一个project吧。</li>
+</ol>
+<h2 id="信息处理方向"><a href="#信息处理方向" class="headerlink" title="信息处理方向"></a>信息处理方向</h2><ol>
+<li>数据title进行分词处理，给每个链接分配tag.</li>
+<li>各个商品的价格关于时间的走向；各个地区出售商品的频率</li>
+<li>数据导入数据库，建立服务读取数据，加入搜索功能</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/07/09/20170709-利用scrapy爬虫收集数据/" data-id="cjxy2v0gx0019vs9lt4f9n72x" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scrapy/">scrapy</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/03/20171103-快速找出win10弹窗的元凶/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          快速找出win10弹窗的元凶
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/06/04/20170604-增强学习在量化交易中的应用调研/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">增强学习在量化交易中的应用调研</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/quantitative-trading/">quantitative trading</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/心得/">心得</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/文章/">文章</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/未完成文章/">未完成文章</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/音乐/">音乐</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACG/">ACG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Paper/">Paper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Reseach/">Reseach</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/caret/">caret</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deepLearning/">deepLearning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frp/">frp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keras/">keras</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/math/">math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mentohust/">mentohust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mxnet/">mxnet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openwrt/">openwrt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paper/">paper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/research/">research</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sc16/">sc16</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scrapy/">scrapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/theano/">theano</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tricks/">tricks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/v4算法/">v4算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/决策树/">决策树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/参数优化/">参数优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/台湾/">台湾</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/心得/">心得</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/投稿/">投稿</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/摄影/">摄影</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/教程/">教程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/斐讯/">斐讯</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/旅行/">旅行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深海少女/">深海少女</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/调音/">调音</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/路由/">路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/量化交易/">量化交易</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锐捷/">锐捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/音乐/">音乐</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ACG/" style="font-size: 10px;">ACG</a> <a href="/tags/Paper/" style="font-size: 10px;">Paper</a> <a href="/tags/R/" style="font-size: 16.67px;">R</a> <a href="/tags/Reseach/" style="font-size: 20px;">Reseach</a> <a href="/tags/caret/" style="font-size: 10px;">caret</a> <a href="/tags/deepLearning/" style="font-size: 10px;">deepLearning</a> <a href="/tags/frp/" style="font-size: 10px;">frp</a> <a href="/tags/keras/" style="font-size: 10px;">keras</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/math/" style="font-size: 10px;">math</a> <a href="/tags/mentohust/" style="font-size: 10px;">mentohust</a> <a href="/tags/mxnet/" style="font-size: 10px;">mxnet</a> <a href="/tags/openwrt/" style="font-size: 10px;">openwrt</a> <a href="/tags/paper/" style="font-size: 10px;">paper</a> <a href="/tags/python/" style="font-size: 16.67px;">python</a> <a href="/tags/research/" style="font-size: 13.33px;">research</a> <a href="/tags/sc16/" style="font-size: 10px;">sc16</a> <a href="/tags/scrapy/" style="font-size: 10px;">scrapy</a> <a href="/tags/theano/" style="font-size: 10px;">theano</a> <a href="/tags/tricks/" style="font-size: 10px;">tricks</a> <a href="/tags/v4算法/" style="font-size: 10px;">v4算法</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/决策树/" style="font-size: 13.33px;">决策树</a> <a href="/tags/参数优化/" style="font-size: 10px;">参数优化</a> <a href="/tags/台湾/" style="font-size: 13.33px;">台湾</a> <a href="/tags/心得/" style="font-size: 10px;">心得</a> <a href="/tags/投稿/" style="font-size: 13.33px;">投稿</a> <a href="/tags/摄影/" style="font-size: 13.33px;">摄影</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/教程/" style="font-size: 16.67px;">教程</a> <a href="/tags/斐讯/" style="font-size: 10px;">斐讯</a> <a href="/tags/旅行/" style="font-size: 13.33px;">旅行</a> <a href="/tags/机器学习/" style="font-size: 16.67px;">机器学习</a> <a href="/tags/深海少女/" style="font-size: 10px;">深海少女</a> <a href="/tags/算法/" style="font-size: 13.33px;">算法</a> <a href="/tags/调音/" style="font-size: 10px;">调音</a> <a href="/tags/路由/" style="font-size: 13.33px;">路由</a> <a href="/tags/量化交易/" style="font-size: 10px;">量化交易</a> <a href="/tags/锐捷/" style="font-size: 10px;">锐捷</a> <a href="/tags/音乐/" style="font-size: 10px;">音乐</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/11/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/10/20190710-frp使用小结/">在线随机森林代码解析</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/29/20180629-在线随机森林代码解析/">在线随机森林代码解析</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/12/20180612-决策树学习总结/">决策树学习总结</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/21/20180321-控制fio单位时间发出的请求数/">控制fio单位时间发出的请求数</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

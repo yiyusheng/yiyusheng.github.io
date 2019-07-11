@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>【SOLVED】VNCviewer failes to exit full screen mode | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="使用VNCviewer连接服务器可以使用服务器的图形界面，对于需要图形界面的应用来说非常重要，比如我处理数据时要用R画图，必须要有图形界面支持。 我桌面机使用windows 10,用VNCviewer连接服务器的centOS 7.0,但是VNCvewer在进入全屏界面之后无法再退出，原本可以使用F8唤出VNCviewer工具界面的也不管用了。这种时候我如果在桌面机前是可以使用ctrl + alt">
+<meta name="keywords" content="tricks,linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【SOLVED】VNCviewer failes to exit full screen mode">
+<meta property="og:url" content="http://yoursite.com/2016/08/23/20160823-【SOLVED】VNCviewer failes to exit full screen mode/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="使用VNCviewer连接服务器可以使用服务器的图形界面，对于需要图形界面的应用来说非常重要，比如我处理数据时要用R画图，必须要有图形界面支持。 我桌面机使用windows 10,用VNCviewer连接服务器的centOS 7.0,但是VNCvewer在进入全屏界面之后无法再退出，原本可以使用F8唤出VNCviewer工具界面的也不管用了。这种时候我如果在桌面机前是可以使用ctrl + alt">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-07-11T02:52:43.055Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【SOLVED】VNCviewer failes to exit full screen mode">
+<meta name="twitter:description" content="使用VNCviewer连接服务器可以使用服务器的图形界面，对于需要图形界面的应用来说非常重要，比如我处理数据时要用R画图，必须要有图形界面支持。 我桌面机使用windows 10,用VNCviewer连接服务器的centOS 7.0,但是VNCvewer在进入全屏界面之后无法再退出，原本可以使用F8唤出VNCviewer工具界面的也不管用了。这种时候我如果在桌面机前是可以使用ctrl + alt">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-20160823-【SOLVED】VNCviewer failes to exit full screen mode" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/23/20160823-【SOLVED】VNCviewer failes to exit full screen mode/" class="article-date">
+  <time datetime="2016-08-23T08:06:00.000Z" itemprop="datePublished">2016-08-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/文章/">文章</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【SOLVED】VNCviewer failes to exit full screen mode
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用VNCviewer连接服务器可以使用服务器的图形界面，对于需要图形界面的应用来说非常重要，比如我处理数据时要用R画图，必须要有图形界面支持。</p>
+<p>我桌面机使用windows 10,用VNCviewer连接服务器的centOS 7.0,但是VNCvewer在进入全屏界面之后无法再退出，原本可以使用F8唤出VNCviewer工具界面的也不管用了。这种时候我如果在桌面机前是可以使用ctrl + alt + del唤出windows任务管理器结束VNCviewer的进程的。</p>
+<p>但是。。。有一种情况是我回宿舍了，然后用宿舍的机器通过mstsc远程桌面连接到桌面机，这时，会直接进到VNCviewer对应的centOS系统没有办法退出。我以前的做法是在服务器上kill掉VNC进程，这时远程桌面会给你退到windows的桌面。现在发现了一种更好的方式。</p>
+<p>在还没有全屏时把VNCviewer的菜单打开，比如在标题栏上右击，点开选项。将输入栏的菜单键设置成非F8，我设置成了F11，这样，你在全屏时可以通过按F11唤出VNCviewer的菜单栏。可能是centOS的F8已经有用了，导致了这样一个bug吧。总之，换掉菜单键之后解决了问题。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/23/20160823-【SOLVED】VNCviewer failes to exit full screen mode/" data-id="cjxy2v0gi000evs9l3i962k4i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tricks/">tricks</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/30/20161130-Keras中custom loss function的使用/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Keras中custom loss function的使用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/08/21/20160821-头顶烈日与暴雨的台湾东岸9日游【绿岛垦丁篇】/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">头顶烈日与暴雨的台湾东岸9日游【绿岛垦丁篇】</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/quantitative-trading/">quantitative trading</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/心得/">心得</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/文章/">文章</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/未完成文章/">未完成文章</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/音乐/">音乐</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACG/">ACG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Paper/">Paper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Reseach/">Reseach</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/caret/">caret</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deepLearning/">deepLearning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frp/">frp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keras/">keras</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/math/">math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mentohust/">mentohust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mxnet/">mxnet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openwrt/">openwrt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paper/">paper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/research/">research</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sc16/">sc16</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scrapy/">scrapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/theano/">theano</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tricks/">tricks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/v4算法/">v4算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/决策树/">决策树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/参数优化/">参数优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/台湾/">台湾</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/心得/">心得</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/投稿/">投稿</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/摄影/">摄影</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/教程/">教程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/斐讯/">斐讯</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/旅行/">旅行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深海少女/">深海少女</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/调音/">调音</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/路由/">路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/量化交易/">量化交易</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锐捷/">锐捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/音乐/">音乐</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ACG/" style="font-size: 10px;">ACG</a> <a href="/tags/Paper/" style="font-size: 10px;">Paper</a> <a href="/tags/R/" style="font-size: 16.67px;">R</a> <a href="/tags/Reseach/" style="font-size: 20px;">Reseach</a> <a href="/tags/caret/" style="font-size: 10px;">caret</a> <a href="/tags/deepLearning/" style="font-size: 10px;">deepLearning</a> <a href="/tags/frp/" style="font-size: 10px;">frp</a> <a href="/tags/keras/" style="font-size: 10px;">keras</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/math/" style="font-size: 10px;">math</a> <a href="/tags/mentohust/" style="font-size: 10px;">mentohust</a> <a href="/tags/mxnet/" style="font-size: 10px;">mxnet</a> <a href="/tags/openwrt/" style="font-size: 10px;">openwrt</a> <a href="/tags/paper/" style="font-size: 10px;">paper</a> <a href="/tags/python/" style="font-size: 16.67px;">python</a> <a href="/tags/research/" style="font-size: 13.33px;">research</a> <a href="/tags/sc16/" style="font-size: 10px;">sc16</a> <a href="/tags/scrapy/" style="font-size: 10px;">scrapy</a> <a href="/tags/theano/" style="font-size: 10px;">theano</a> <a href="/tags/tricks/" style="font-size: 10px;">tricks</a> <a href="/tags/v4算法/" style="font-size: 10px;">v4算法</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/决策树/" style="font-size: 13.33px;">决策树</a> <a href="/tags/参数优化/" style="font-size: 10px;">参数优化</a> <a href="/tags/台湾/" style="font-size: 13.33px;">台湾</a> <a href="/tags/心得/" style="font-size: 10px;">心得</a> <a href="/tags/投稿/" style="font-size: 13.33px;">投稿</a> <a href="/tags/摄影/" style="font-size: 13.33px;">摄影</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/教程/" style="font-size: 16.67px;">教程</a> <a href="/tags/斐讯/" style="font-size: 10px;">斐讯</a> <a href="/tags/旅行/" style="font-size: 13.33px;">旅行</a> <a href="/tags/机器学习/" style="font-size: 16.67px;">机器学习</a> <a href="/tags/深海少女/" style="font-size: 10px;">深海少女</a> <a href="/tags/算法/" style="font-size: 13.33px;">算法</a> <a href="/tags/调音/" style="font-size: 10px;">调音</a> <a href="/tags/路由/" style="font-size: 13.33px;">路由</a> <a href="/tags/量化交易/" style="font-size: 10px;">量化交易</a> <a href="/tags/锐捷/" style="font-size: 10px;">锐捷</a> <a href="/tags/音乐/" style="font-size: 10px;">音乐</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/11/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/10/20190710-frp使用小结/">在线随机森林代码解析</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/29/20180629-在线随机森林代码解析/">在线随机森林代码解析</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/12/20180612-决策树学习总结/">决策树学习总结</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/21/20180321-控制fio单位时间发出的请求数/">控制fio单位时间发出的请求数</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

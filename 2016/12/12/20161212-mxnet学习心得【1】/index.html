@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>mxnet学习心得【1】 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="mxnet中最基本的元素有两种：mx.ndarray和mx.symbol.前者是mxnet版的numpy.ndarray.后者是符号变量。mxnet是由基于这两个元素的两个项目融合而成，因此取名为mxnet，意为mix net. 理解symbol类mx.symbol本身只是一个占位符，在计算之前都没有进行赋值。这些符号变量可以通过mxnet支持的operator进行运算，比如mxnet重载了加减乘">
+<meta name="keywords" content="R,deepLearning,python,mxnet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mxnet学习心得【1】">
+<meta property="og:url" content="http://yoursite.com/2016/12/12/20161212-mxnet学习心得【1】/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="mxnet中最基本的元素有两种：mx.ndarray和mx.symbol.前者是mxnet版的numpy.ndarray.后者是符号变量。mxnet是由基于这两个元素的两个项目融合而成，因此取名为mxnet，意为mix net. 理解symbol类mx.symbol本身只是一个占位符，在计算之前都没有进行赋值。这些符号变量可以通过mxnet支持的operator进行运算，比如mxnet重载了加减乘">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-07-11T02:52:43.056Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mxnet学习心得【1】">
+<meta name="twitter:description" content="mxnet中最基本的元素有两种：mx.ndarray和mx.symbol.前者是mxnet版的numpy.ndarray.后者是符号变量。mxnet是由基于这两个元素的两个项目融合而成，因此取名为mxnet，意为mix net. 理解symbol类mx.symbol本身只是一个占位符，在计算之前都没有进行赋值。这些符号变量可以通过mxnet支持的operator进行运算，比如mxnet重载了加减乘">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-20161212-mxnet学习心得【1】" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/12/20161212-mxnet学习心得【1】/" class="article-date">
+  <time datetime="2016-12-12T12:47:00.000Z" itemprop="datePublished">2016-12-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/文章/">文章</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      mxnet学习心得【1】
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>mxnet中最基本的元素有两种：<code>mx.ndarray</code>和<code>mx.symbol</code>.前者是mxnet版的numpy.ndarray.后者是符号变量。mxnet是由基于这两个元素的两个项目融合而成，因此取名为mxnet，意为mix net.</p>
+<h2 id="理解symbol类"><a href="#理解symbol类" class="headerlink" title="理解symbol类"></a>理解symbol类</h2><p><code>mx.symbol</code>本身只是一个占位符，在计算之前都没有进行赋值。这些符号变量可以通过mxnet支持的<code>operator</code>进行运算，比如mxnet重载了加减乘除，他们都是二元运算符。可以将每个<code>operator</code>看成是一个函数，有的函数是一个输入，有和函数是两个输入。输入也可以是一个到多个。</p>
+<h2 id="理解symbol类的operator"><a href="#理解symbol类的operator" class="headerlink" title="理解symbol类的operator"></a>理解symbol类的operator</h2><p>Deep learning中最重要的层在mxnet中也是一个<code>operator</code>，通过<code>operator</code>可以产生新的<code>symbol</code>。可以认为<code>operator</code>是一个包含在<code>symbol</code>中的对<code>symbol</code>中包含的<code>symbol</code>进行运算的操作符，在<code>symbol</code>中可以有<code>operator</code>也可以没有。输入数据或上一层的输出结果就是成为了这个函数的自变量，其输出是下一层的输入。如果<code>operator</code>是层的话，这个函数还会引入自带的参数<code>symbol</code>(我将其理解为默认的symbol)<code>weight</code>和<code>bias</code>。所有的这些，每进行一次<code>operator</code>，都可以用<code>print(net.tojson)</code>查看网络的结构.</p>
+<h2 id="执行symbol"><a href="#执行symbol" class="headerlink" title="执行symbol"></a>执行symbol</h2><p>当我们将symbol设计好之后，要对数据进行赋值才能执行。对数据赋值的是bind方法。这个方法有一个设备参数用来指定执行symbol的设备(cpu/gpu)，和一个dict参数来指定所有的符号对应的值。这里的值的类型需要是<code>mx.ndarry</code>。这个方法会返回一个executor对象。调用<code>executor.forward()</code>就会执行symbol中对应的计算，并将返回值存储在<code>executor</code>中，返回值的取出方法为<code>executor.output[0].asnumpy()</code></p>
+<p>Reference:<br>[1] <a href="https://github.com/dmlc/mxnet-notebooks" target="_blank" rel="noopener">https://github.com/dmlc/mxnet-notebooks</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/12/12/20161212-mxnet学习心得【1】/" data-id="cjxy2v0gk000gvs9lwtl5u2f1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/R/">R</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deepLearning/">deepLearning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mxnet/">mxnet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/05/05/20170505-Terms in Survival Analysis/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Terms in Survival Analysis
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/30/20161130-Keras中custom loss function的使用/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Keras中custom loss function的使用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/quantitative-trading/">quantitative trading</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/心得/">心得</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/文章/">文章</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/未完成文章/">未完成文章</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/音乐/">音乐</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACG/">ACG</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Paper/">Paper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/R/">R</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Reseach/">Reseach</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/caret/">caret</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deepLearning/">deepLearning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frp/">frp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keras/">keras</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/math/">math</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mentohust/">mentohust</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mxnet/">mxnet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openwrt/">openwrt</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/paper/">paper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/research/">research</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sc16/">sc16</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scrapy/">scrapy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/theano/">theano</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tricks/">tricks</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/v4算法/">v4算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/win10/">win10</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/决策树/">决策树</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/参数优化/">参数优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/台湾/">台湾</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/心得/">心得</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/投稿/">投稿</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/摄影/">摄影</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/教程/">教程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/斐讯/">斐讯</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/旅行/">旅行</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深海少女/">深海少女</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/调音/">调音</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/路由/">路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/量化交易/">量化交易</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锐捷/">锐捷</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/音乐/">音乐</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ACG/" style="font-size: 10px;">ACG</a> <a href="/tags/Paper/" style="font-size: 10px;">Paper</a> <a href="/tags/R/" style="font-size: 16.67px;">R</a> <a href="/tags/Reseach/" style="font-size: 20px;">Reseach</a> <a href="/tags/caret/" style="font-size: 10px;">caret</a> <a href="/tags/deepLearning/" style="font-size: 10px;">deepLearning</a> <a href="/tags/frp/" style="font-size: 10px;">frp</a> <a href="/tags/keras/" style="font-size: 10px;">keras</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/math/" style="font-size: 10px;">math</a> <a href="/tags/mentohust/" style="font-size: 10px;">mentohust</a> <a href="/tags/mxnet/" style="font-size: 10px;">mxnet</a> <a href="/tags/openwrt/" style="font-size: 10px;">openwrt</a> <a href="/tags/paper/" style="font-size: 10px;">paper</a> <a href="/tags/python/" style="font-size: 16.67px;">python</a> <a href="/tags/research/" style="font-size: 13.33px;">research</a> <a href="/tags/sc16/" style="font-size: 10px;">sc16</a> <a href="/tags/scrapy/" style="font-size: 10px;">scrapy</a> <a href="/tags/theano/" style="font-size: 10px;">theano</a> <a href="/tags/tricks/" style="font-size: 10px;">tricks</a> <a href="/tags/v4算法/" style="font-size: 10px;">v4算法</a> <a href="/tags/win10/" style="font-size: 10px;">win10</a> <a href="/tags/决策树/" style="font-size: 13.33px;">决策树</a> <a href="/tags/参数优化/" style="font-size: 10px;">参数优化</a> <a href="/tags/台湾/" style="font-size: 13.33px;">台湾</a> <a href="/tags/心得/" style="font-size: 10px;">心得</a> <a href="/tags/投稿/" style="font-size: 13.33px;">投稿</a> <a href="/tags/摄影/" style="font-size: 13.33px;">摄影</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/教程/" style="font-size: 16.67px;">教程</a> <a href="/tags/斐讯/" style="font-size: 10px;">斐讯</a> <a href="/tags/旅行/" style="font-size: 13.33px;">旅行</a> <a href="/tags/机器学习/" style="font-size: 16.67px;">机器学习</a> <a href="/tags/深海少女/" style="font-size: 10px;">深海少女</a> <a href="/tags/算法/" style="font-size: 13.33px;">算法</a> <a href="/tags/调音/" style="font-size: 10px;">调音</a> <a href="/tags/路由/" style="font-size: 13.33px;">路由</a> <a href="/tags/量化交易/" style="font-size: 10px;">量化交易</a> <a href="/tags/锐捷/" style="font-size: 10px;">锐捷</a> <a href="/tags/音乐/" style="font-size: 10px;">音乐</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/11/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/10/20190710-frp使用小结/">在线随机森林代码解析</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/29/20180629-在线随机森林代码解析/">在线随机森林代码解析</a>
+          </li>
+        
+          <li>
+            <a href="/2018/06/12/20180612-决策树学习总结/">决策树学习总结</a>
+          </li>
+        
+          <li>
+            <a href="/2018/03/21/20180321-控制fio单位时间发出的请求数/">控制fio单位时间发出的请求数</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
